@@ -2,7 +2,7 @@ import re
 from typing import Optional
 
 import requests
-from requests import Timeout
+from requests.exceptions import Timeout
 
 from .mixpanel_middleware import MixpanelMiddleware
 from .retry import retry_api_request
@@ -21,7 +21,7 @@ class Monday:
         self.mixpanel_middleware = MixpanelMiddleware(mixpanel_token)
 
     @retry_api_request
-    def request_with_retry(self, query=None, timeout=30, retry_count=2):
+    def request_with_retry(self, query, timeout, retry_count):
         try:
             response = requests.post(
                 self.api_url, timeout=timeout, json={"query": query}, headers=self._get_authorization_header()
