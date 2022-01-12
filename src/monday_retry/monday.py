@@ -21,7 +21,7 @@ class Monday:
         self.mixpanel_middleware = MixpanelMiddleware(mixpanel_token)
 
     @retry_api_request
-    def request_with_retry(self, query, timeout, retry_count):
+    def request_with_retry(self, query, timeout=30, retry_count=2):
         try:
             response = requests.post(
                 self.api_url, timeout=timeout, json={"query": query}, headers=self._get_authorization_header()
