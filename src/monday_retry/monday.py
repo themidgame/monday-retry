@@ -32,6 +32,7 @@ class Monday:
         if 'errors' not in response:
             return response
         else:
+            print('🚨 retry errors', response)
             self._mixpanel_logger('Complexity')
             return {'errors': response, 'delay': self._extract_delay_from_api_response(response['errors'])}
 
