@@ -9,13 +9,14 @@ from .retry import retry_api_request
 
 
 class Monday:
-    def __init__(self, api_key):
+    def __init__(self, api_key, api_version):
         self.api_url = 'https://api.monday.com/v2/'
         self.api_key = api_key
+        self.api_version = api_version
         self.mixpanel_middleware: Optional[MixpanelMiddleware] = None
 
     def _get_authorization_header(self):
-        return {"Authorization": self.api_key}
+        return {"Authorization": self.api_key, 'API-Version': self.api_version}
 
     def initiate_tracking_with_mixpanel(self, mixpanel_token):
         self.mixpanel_middleware = MixpanelMiddleware(mixpanel_token)
