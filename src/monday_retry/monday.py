@@ -9,7 +9,7 @@ from .retry import retry_api_request
 
 
 class Monday:
-    def __init__(self, api_key, api_version):
+    def __init__(self, api_key, api_version='2024-01'):
         self.api_url = 'https://api.monday.com/v2/'
         self.api_key = api_key
         self.api_version = api_version
