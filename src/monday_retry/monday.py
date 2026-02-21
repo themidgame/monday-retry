@@ -1,4 +1,3 @@
-import re
 from typing import Optional
 
 import requests
@@ -41,13 +40,9 @@ class Monday:
     def _extract_delay_from_api_response(errors):
         delay = 0
         for error in errors:
-            if 'budget exhausted' in error['message']:
-                message = error['message']
-                f = re.search(r"(\d+ seconds)", message)
-                try:
-                    delay = int(f[0].split(' ')[0])
-                except IndexError:
-                    pass
+            retry_in = error.get('extensions', {}).get('retry_in_seconds')
+            if retry_in is not None:
+                delay = int(retry_in)
         return delay
 
     def _mixpanel_logger(self, error_type: str):
