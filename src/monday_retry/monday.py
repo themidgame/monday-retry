@@ -1,4 +1,3 @@
-import re
 from typing import Optional
 
 import requests
@@ -9,7 +8,7 @@ from .retry import retry_api_request
 
 
 class Monday:
-    def __init__(self, api_key, api_version='2024-01'):
+    def __init__(self, api_key, api_version='2025-04'):
         self.api_url = 'https://api.monday.com/v2/'
         self.api_key = api_key
         self.api_version = api_version
@@ -41,13 +40,9 @@ class Monday:
     def _extract_delay_from_api_response(errors):
         delay = 0
         for error in errors:
-            if 'budget exhausted' in error['message']:
-                message = error['message']
-                f = re.search(r"(\d+ seconds)", message)
-                try:
-                    delay = int(f[0].split(' ')[0])
-                except IndexError:
-                    pass
+            retry_in = error.get('extensions', {}).get('retry_in_seconds')
+            if retry_in is not None:
+                delay = int(retry_in)
         return delay
 
     def _mixpanel_logger(self, error_type: str):

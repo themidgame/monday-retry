@@ -1,2 +1,8 @@
 .idea/
 __pycache__/
+
+# Qlty
+.qlty/logs
+.qlty/out
+.qlty/plugin_cachedir
+.qlty/results
